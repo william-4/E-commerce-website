@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+value="{{ request.form['name'] or shoe['product_name'] }}"></input>
+
+{% block content %}
+    <h1>{% block title %} Update "{{ shoe['product_name'] }}" {% endblock %}</h1>
+    <form method="post">
+        <label for="name">Product Name</label>
+        <br>
+        <input type="text" name="name"
+                placeholder="shoe name"
+                value="{{ request.form['name'] or shoe['product_name'] }}"></input>
+        <br>
+
+        <label for="category">Category</label>
+        <br>
+        <input type="text" name="category"
+                placeholder="shoe category"
+                value="{{ request.form['category'] or shoe['product_category'] }}"></input>
+        <br>
+
+        <label for="price">Price</label>
+        <br>
+        <input type="text" name="price"
+                placeholder="shoe price"
+                value="{{ request.form['price'] or shoe['product_price'] }}"></input>
+        <br>
+
+        <label for="quantity">Pairs of shoes available</label>
+        <br>
+        <input type="text" name="quantity"
+                placeholder="number of pairs currently in stock"
+                value="{{ request.form['quantity'] or shoe['product_quantity'] }}"></input>
+        <br>
+
+        <label for="image_01">Image 01</label>
+        <br>
+        <input type="text" name="image_01"
+                placeholder="Upload image 1"
+                value="{{ request.form['image_01'] or shoe['product_image_01'] }}"></input>
+        <br>
+
+        <label for="image_02">Image 02</label>
+        <br>
+        <input type="text" name="image_02"
+                placeholder="Upload image 2"
+                value="{{ request.form['image_02'] or shoe['product_image_02'] }}"></input>
+        <br>
+
+        <label for="image_03">Image 03</label>
+        <br>
+        <input type="text" name="image_03"
+                placeholder="Upload image 3"
+                value="{{ request.form['image_03'] or shoe['product_image_03'] }}"></input>
+        <br>
+
+        <label for="image_04">Image 04</label>
+        <br>
+        <input type="text" name="image_04"
+                placeholder="Upload image 4"
+                value="{{ request.form['image_04'] or shoe['product_image_04'] }}"></input>
+        <br>
+
+        <label for="image_05">Image 05</label>
+        <br>
+        <input type="text" name="image_05"
+                placeholder="Upload image 5"
+                value="{{ request.form['image_05'] or shoe['product_image_05 }}"></input>
+        <br>
+
+        <label for="description">Product Description</label>
+        <br>
+        <textarea name="description"
+                    placeholder="Give a brief description about the shoe"
+                    rows="15"
+                    cols="60"
+                    >{{ request.form['description'] or shoe['product_description'] }}</textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <form action="{{ url_for('delete', id=shoe['product_id']) }}" method="POST">
+        <input type="submit" value="Delete Post"
+                onclick="return confirm('Are you sure you want to delete this item?')">
+    </form>
+{% endblock %}
