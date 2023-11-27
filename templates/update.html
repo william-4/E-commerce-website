@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
-value="{{ request.form['name'] or shoe['product_name'] }}"></input>
-
 {% block content %}
     <h1>{% block title %} Update "{{ shoe['product_name'] }}" {% endblock %}</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <label for="name">Product Name</label>
         <br>
         <input type="text" name="name"
@@ -35,37 +33,37 @@ value="{{ request.form['name'] or shoe['product_name'] }}"></input>
 
         <label for="image_01">Image 01</label>
         <br>
-        <input type="text" name="image_01"
-                placeholder="Upload image 1"
-                value="{{ request.form['image_01'] or shoe['product_image_01'] }}"></input>
+        <input type="file" name="image_01"
+                placeholder="Upload image 1" accept="image/*"
+                value="{{ request.files['image_01'] or shoe['product_image_01'] }}"></input>
         <br>
 
         <label for="image_02">Image 02</label>
         <br>
-        <input type="text" name="image_02"
-                placeholder="Upload image 2"
-                value="{{ request.form['image_02'] or shoe['product_image_02'] }}"></input>
+        <input type="file" name="image_02"
+                placeholder="Upload image 2" accept="image/*"
+                value="{{ request.files['image_02'] or shoe['product_image_02'] }}"></input>
         <br>
 
         <label for="image_03">Image 03</label>
         <br>
-        <input type="text" name="image_03"
-                placeholder="Upload image 3"
-                value="{{ request.form['image_03'] or shoe['product_image_03'] }}"></input>
+        <input type="file" name="image_03"
+                placeholder="Upload image 3" accept="image/*"
+                value="{{ request.files['image_03'] or shoe['product_image_03'] }}"></input>
         <br>
 
         <label for="image_04">Image 04</label>
         <br>
-        <input type="text" name="image_04"
-                placeholder="Upload image 4"
-                value="{{ request.form['image_04'] or shoe['product_image_04'] }}"></input>
+        <input type="file" name="image_04"
+                placeholder="Upload image 4" accept="image/*"
+                value="{{ request.files['image_04'] or shoe['product_image_04'] }}"></input>
         <br>
 
         <label for="image_05">Image 05</label>
         <br>
-        <input type="text" name="image_05"
-                placeholder="Upload image 5"
-                value="{{ request.form['image_05'] or shoe['product_image_05 }}"></input>
+        <input type="file" name="image_05"
+                placeholder="Upload image 5" accept="image/*"
+                value="{{ request.files['image_05'] or shoe['product_image_05'] }}"></input>
         <br>
 
         <label for="description">Product Description</label>

@@ -2,10 +2,15 @@
 
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect, abort
+import os
+from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 random_id = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
 
@@ -25,6 +30,11 @@ def get_shoe(shoe_id):
         abort(404)
     return shoe
 
+# helper function to check if the file is valid
+def allowed_file(filename):
+    if '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS:
+        return True
+    return False
 
 # application routes
 @app.route('/')
@@ -49,11 +59,11 @@ def add():
         category = request.form['category']
         price = request.form['price']
         quantity = request.form['quantity']
-        image_01 = request.form['image_01']
-        image_02 = request.form['image_02']
-        image_03 = request.form['image_03']
-        image_04 = request.form['image_04']
-        image_05 = request.form['image_05']
+        image_01 = request.files['image_01']
+        image_02 = request.files['image_02']
+        image_03 = request.files['image_03']
+        image_04 = request.files['image_04']
+        image_05 = request.files['image_05']
         description = request.form['description']
 
         if not name:
@@ -65,10 +75,16 @@ def add():
             flash('Price is required')
         elif not quantity:
             flash('Quantity is required')
-        elif not image_01:
-            flash('Image 1 is required')
-        elif not image_02:
-            flash('Image 2 is required')
+        elif not image_01 or image_01.filename == '':
+            flash('Image 01 is required')
+        elif not image_02 or image_02.filename == '':
+            flash('Image 02 is required')
+        elif not image_03 or image_03.filename == '':
+            flash('Image 03 is required')
+        elif not image_04 or image_04.filename == '':
+            flash('Image 04 is required')
+        elif not image_05 or image_05.filename == '':
+            flash('Image 05 is required')
         elif not description:
             flash('A brief descriptin of the shoe is required')
         else:
@@ -80,8 +96,8 @@ def add():
                                product_image_01, product_image_02, product_image_03,\
                                product_image_04, product_image_05, product_description)\
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                                (id, name, category, price, quantity, image_01,
-                                 image_02, image_03, image_04, image_05, description))
+                                (id, name, category, price, quantity, image_01.read(),
+                                 image_02.read(), image_03.read(), image_04.read(), image_05.read(), description))
             connection.commit()
             connection.close()
             return redirect(url_for('index'))
@@ -101,25 +117,32 @@ def update(id):
         category = request.form['category']
         price = request.form['price']
         quantity = request.form['quantity']
-        image_01 = request.form['image_01']
-        image_02 = request.form['image_02']
-        image_03 = request.form['image_03']
-        image_04 = request.form['image_04']
-        image_05 = request.form['image_05']
+        image_01 = request.files['image_01']
+        image_02 = request.files['image_02']
+        image_03 = request.files['image_03']
+        image_04 = request.files['image_04']
+        image_05 = request.files['image_05']
         description = request.form['description']
 
         if not name:
             flash('Shoe name is required!')
+            return render_template('add.html')
         elif not category:
             flash('Shoe category is required')
         elif not price:
             flash('Price is required')
         elif not quantity:
             flash('Quantity is required')
-        elif not image_01:
-            flash('Image 1 is required')
-        elif not image_02:
-            flash('Image 2 is required')
+        elif not image_01 or image_01.filename == '':
+            flash('Image 01 is required')
+        elif not image_02 or image_02.filename == '':
+            flash('Image 02 is required')
+        elif not image_03 or image_03.filename == '':
+            flash('Image 03 is required')
+        elif not image_04 or image_04.filename == '':
+            flash('Image 04 is required')
+        elif not image_05 or image_05.filename == '':
+            flash('Image 05 is required')
         elif not description:
             flash('A brief descriptin of the shoe is required')
         else:
@@ -129,8 +152,8 @@ def update(id):
                                product_image_02 = ?, product_image_03 = ?, product_image_04=?,\
                                product_image_05 = ?, description = ?'
                                'WHERE id = ?',
-                               (name, category, price, quantity, image_01,
-                                image_02, image_03, image_04, image_05,
+                               (name, category, price, quantity, image_01.read(),
+                                image_02.read(), image_03.read(), image_04.read(), image_05.read(),
                                 description, id))
             connection.commit()
             connection.close()
@@ -146,7 +169,7 @@ def delete(id):
     shoe = get_shoe(id)
 
     connection = get_db_connection()
-    connection.execute('DELETE FROM products WHERE id = ?', (id,))
+    connection.execute('DELETE FROM products WHERE product_id = ?', (id,))
     connection.commit()
     connection.close()
 

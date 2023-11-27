@@ -17,10 +17,10 @@ CREATE TABLE products (
     product_category TEXT NOT NULL,
     product_price INTEGER NOT NULL,
     product_quantity INTEGER NOT NULL,
-    product_image_01 VARCHAR NOT NULL,
-    product_image_02 VARCHAR NOT NULL,
-    product_image_03 VARCHAR,
-    product_image_04 VARCHAR,
-    product_image_05 VARCHAR,
+    product_image_01 BLOB NOT NULL,
+    product_image_02 BLOB NOT NULL,
+    product_image_03 BLOB,
+    product_image_04 BLOB,
+    product_image_05 BLOB,
     product_description VARCHAR NOT NULL
 );
